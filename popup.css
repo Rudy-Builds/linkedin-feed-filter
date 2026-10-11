@@ -1,0 +1,216 @@
+:root {
+  --bg: #f4f2ee;
+  --card: #ffffff;
+  --text: #1d2226;
+  --muted: #5f6b76;
+  --line: #dcd9d2;
+  --accent: #0a66c2;
+  --accent-text: #ffffff;
+  --track-off: #b8bfc6;
+  --ok: #1a7f37;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1b1f23;
+    --card: #262b30;
+    --text: #e8eaed;
+    --muted: #9aa5b1;
+    --line: #3a4148;
+    --accent: #71b7fb;
+    --accent-text: #0b1722;
+    --track-off: #56606a;
+    --ok: #57c76f;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.4 -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+}
+
+#app {
+  width: 340px;
+  max-width: 100%;
+  padding: 16px;
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.tagline {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.status {
+  min-height: 18px;
+  margin: 10px 0 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.card {
+  margin-bottom: 10px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+}
+
+h2 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.hint {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* three-way segmented control */
+.seg {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--bg);
+}
+
+.seg label { position: relative; display: block; }
+
+.seg input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+}
+
+.seg span {
+  display: block;
+  padding: 7px 4px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.seg input:checked + span {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.seg input:focus-visible + span {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* toggle rows */
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.row + .row { border-top: 1px solid var(--line); }
+.row strong { display: block; font-size: 14px; }
+.row small { display: block; color: var(--muted); font-size: 12px; }
+
+.switch { position: relative; flex: none; display: inline-block; width: 40px; height: 24px; }
+.switch input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+
+.track {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--track-off);
+  transition: background 0.15s;
+}
+
+.thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.15s;
+}
+
+.switch input:checked + .track { background: var(--accent); }
+.switch input:checked + .track .thumb { transform: translateX(16px); }
+.switch input:focus-visible + .track { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* limit stepper */
+.limit {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.limit button,
+.limit input {
+  height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  font: 600 16px/1 -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+}
+
+.limit button { width: 44px; cursor: pointer; }
+.limit button:hover { border-color: var(--accent); }
+.limit input { flex: 1; min-width: 0; text-align: center; -moz-appearance: textfield; }
+.limit input::-webkit-outer-spin-button,
+.limit input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.limit button:focus-visible,
+.limit input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.link {
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+}
+
+.link:hover { text-decoration: underline; }
+.saved { color: var(--ok); font-size: 12px; }
+
+/* master switch off: dim everything else */
+#app.off #controls { opacity: 0.45; }

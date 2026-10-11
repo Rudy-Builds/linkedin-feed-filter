@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mock LinkedIn feed (test page)</title>
+  <style>
+    body { margin: 0; background: #f4f2ee; font: 14px/1.4 system-ui, sans-serif; color: #1d2226; }
+    #feed { width: 560px; margin: 0 auto; padding: 16px 0; }
+    .post { background: #fff; border: 1px solid #d0d0d0; border-radius: 8px; margin-bottom: 8px; padding: 12px 0; }
+    .post > * { margin-left: 16px; margin-right: 16px; }
+    .hdr { display: flex; gap: 10px; align-items: center; }
+    .hdr img { width: 48px; height: 48px; border-radius: 50%; }
+    .hdr p { margin: 0; }
+    .label { color: #666; font-size: 12px; }
+    .media { margin: 8px 0; }
+    .media img.pic { display: block; width: 500px; height: 300px; }
+    .media video { display: block; width: 500px; height: 280px; background: #000; }
+    .bar { display: flex; gap: 8px; border-top: 1px solid #eee; padding-top: 8px; margin-top: 8px; }
+    .bar button { padding: 6px 10px; }
+    .comments { border-top: 1px solid #eee; margin-top: 8px; padding-top: 8px; }
+    .comments img { width: 220px; height: 120px; display: block; }
+    #sentinel { height: 20px; }
+  </style>
+  <link rel="stylesheet" href="/content.css">
+</head>
+<body>
+  <div data-testid="mainFeed" id="feed"></div>
+  <div id="sentinel"></div>
+
+  <script>
+    // --- mock post builder (mirrors the structure of LinkedIn's current feed markup) ----------
+    const SVG = c => 'data:image/svg+xml;utf8,' + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="500" height="300"><rect width="500" height="300" fill="' + c + '"/></svg>');
+    const AVATAR = SVG('#999');
+    let counter = 0;
+
+    function buildPost(o) {
+      const id = o.id || 'p-' + (++counter);
+      const el = document.createElement('div');
+      if (o.legacy) {
+        el.className = 'post feed-shared-update-v2';
+        el.setAttribute('data-urn', 'urn:li:activity:' + (1000 + counter));
+      } else {
+        el.className = 'post';
+        el.setAttribute('role', 'listitem');
+        el.setAttribute('componentkey', 'update-card-focus-' + id);
+      }
+      el.id = id;
+
+      let h = '';
+      if (o.activity) h += '<p class="label"><span><a href="/in/friend">Jane Doe</a> likes this</span></p>';
+      if (o.suggested) h += '<p class="label"><span>Suggested</span></p>';
+      h += '<div class="hdr"><a href="/in/' + id + '"><img src="' + AVATAR + '" width="48" height="48"></a>' +
+           '<div><p><span>Author ' + id + '</span></p><p><span>Head of Things at Acme</span></p>';
+      if (o.promoted) h += '<p><span>Promoted</span></p>';
+      else h += '<p><span>3h • Edited</span></p>';
+      h += '</div></div>';
+
+      const bodyTag = o.legacy ? '<div class="update-components-text"><span>' : '<span data-testid="expandable-text-box">';
+      const bodyEnd = o.legacy ? '</span></div>' : '</span>';
+      h += '<div class="textwrap">' + bodyTag + (o.text || 'This is the written part of post ' + id + '.') + bodyEnd + '</div>';
+
+      if (o.image) h += '<div class="media"><img class="pic" src="' + SVG('#4a90d9') + '" alt="photo"></div>';
+      if (o.video) h += '<div class="media"><video></video><button aria-label="Play">Play</button></div>';
+      if (o.poster) h += '<div class="media"><div class="player"><img class="pic" src="' + SVG('#222') + '" alt="poster"><video style="display:none"></video></div></div>';
+
+      h += '<div class="bar"><button><span>Like</span></button><button><span>Comment</span></button>' +
+           '<button><span>Repost</span></button><button><span>Send</span></button></div>';
+      if (o.commentImage) {
+        h += '<div class="comments" data-testid="comments-list"><p><span>Nice one!</span></p><img src="' + SVG('#c33') + '" width="220" height="120"></div>';
+      }
+      el.innerHTML = h;
+      return el;
+    }
+
+    function buildFeed() {
+      const feed = document.getElementById('feed');
+      feed.textContent = '';
+      counter = 0;
+      const specs = [
+        { id: 'p-text' },
+        { id: 'p-image', image: true },
+        { id: 'p-video', video: true },
+        { id: 'p-promoted', promoted: true, image: true },
+        { id: 'p-suggested', suggested: true },
+        { id: 'p-activity', activity: true },
+        { id: 'p-commentimg', commentImage: true },
+        { id: 'p-both', image: true, video: true },
+        { id: 'p-legacy', legacy: true },
+        { id: 'p-poster', poster: true }
+      ];
+      for (let i = 1; i <= 30; i++) specs.push({ id: 'plain-' + i });
+      specs.forEach(s => feed.appendChild(buildPost(s)));
+    }
+
+    window.buildPost = buildPost;
+    window.buildFeed = buildFeed;
+    buildFeed();
+  </script>
+  <script src="/test/shim.js"></script>
+  <script src="/defaults.js"></script>
+  <script src="/content.js"></script>
+  <script src="/test/tests.js"></script>
+</body>
+</html>
