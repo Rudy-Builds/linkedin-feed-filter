@@ -54,6 +54,10 @@ That's it. With the default settings your feed is already filtered.
 
 Click the **Feed Filter** icon in your toolbar while you're on LinkedIn. Every change saves instantly.
 
+<p align="center">
+  <img src="docs/settings.png" alt="The Feed Filter settings menu: an on/off switch, Show / Text only / Hide post choices for videos and pictures, switches for Promoted, Suggested and Connection activity posts, and a Posts to show counter set to 20." width="340">
+</p>
+
 | Setting | What it does |
 | --- | --- |
 | **On / off switch** (top right) | Turn the filter off completely without removing it. |
