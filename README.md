@@ -15,6 +15,17 @@ about people again, not the algorithm.
 
 Everything is controlled from one small menu, and changes apply right away.
 
+## Heads up before you install
+
+- **Not affiliated with LinkedIn.** This is an independent, open-source project. "LinkedIn" is a trademark of
+  LinkedIn Corporation.
+- **LinkedIn's rules discourage add-ons like this.** LinkedIn's help page on
+  [prohibited software and extensions](https://www.linkedin.com/help/linkedin/answer/a1341387) says it does not
+  allow browser extensions that change how its site looks, and that it can restrict accounts that break its
+  rules. This add-on only hides things on your own screen. It doesn't collect data, send anything anywhere, or
+  click, like or post anything for you. But it does change how LinkedIn looks, so **you use it at your own
+  risk**. If you'd rather not take that risk, don't install it.
+
 ## Install (about 3 minutes, no coding)
 
 Works in **Google Chrome, Microsoft Edge, Brave and Arc**. (It is not in the Chrome Web Store, so the steps below
@@ -94,6 +105,10 @@ anything, track you, or send any data anywhere; your settings stay in your brows
 | The feed stops and shows "Show more" | That's your **Posts to show** limit. Click **Show more**, raise the number, or set it to `0`. |
 | An ad or suggested post still gets through | LinkedIn changes its page layout now and then. Please [open an issue](../../issues) and say what you saw. |
 | Ads aren't hidden and LinkedIn is in another language | Ad and "suggested" detection currently reads English labels only. |
+
+## License
+
+[MIT](LICENSE). Free to use, copy and change.
 
 ---
 
